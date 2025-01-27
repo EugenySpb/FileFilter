@@ -27,4 +27,8 @@ public class OutputFile {
             }
         }
     }
+
+    public String getFileName(String type) {
+        return outPath + File.separator + prefix + type + ".txt";
+    }
 }

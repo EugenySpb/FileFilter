@@ -4,6 +4,7 @@ import ru.novikov.file.FileProcessor;
 import ru.novikov.file.OutputFile;
 import ru.novikov.parser.FlagParser;
 import ru.novikov.processor.DataProcessor;
+import ru.novikov.statistics.Calculation;
 
 import java.io.IOException;
 
@@ -34,5 +35,10 @@ public class AppService {
         outputFile.writeToFile("strings", processor.getStrings());
 
         System.out.println("Фильтрация файлов выполнена. Результаты записаны в указанные файлы.");
+
+        if (flag.isShowStatistics()) {
+            Calculation calculation = new Calculation(outputFile);
+            calculation.calculateQuantity(processor);
+        }
     }
 }
