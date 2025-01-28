@@ -9,6 +9,8 @@ public class FlagParser {
     private String outPath = ".";
     private String prefix = "";
     private boolean appendMode = false;
+    private boolean showShortStatistics = false;
+    private boolean showFullStatistics = false;
 
     public FlagParser(String[] args) {
         parseFlag(args);
@@ -34,6 +36,12 @@ public class FlagParser {
                 case "-a":
                     appendMode = true;
                     break;
+                case "-s":
+                    showShortStatistics = true;
+                    break;
+                case "-f":
+                    showFullStatistics = true;
+                    break;
                 default:
                     inputFiles.add(args[i]);
                     break;
@@ -49,23 +57,19 @@ public class FlagParser {
         return outPath;
     }
 
-    public void setOutPath(String outPath) {
-        this.outPath = outPath;
-    }
-
     public String getPrefix() {
         return prefix;
-    }
-
-    public void setPrefix(String prefix) {
-        this.prefix = prefix;
     }
 
     public boolean isAppendMode() {
         return appendMode;
     }
 
-    public void setAppendMode(boolean appendMode) {
-        this.appendMode = appendMode;
+    public boolean isShowShortStatistics() {
+        return showShortStatistics;
+    }
+
+    public boolean isShowFullStatistics() {
+        return showFullStatistics;
     }
 }
