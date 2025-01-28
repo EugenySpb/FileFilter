@@ -1,5 +1,7 @@
 package ru.novikov.file;
 
+import ru.novikov.datatype.DataType;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -18,8 +20,8 @@ public class OutputFile {
         this.appendMode = appendMode;
     }
 
-    public void writeToFile(String type, List<String> data) throws IOException {
-        String fileName = outPath + File.separator + prefix + type + ".txt";
+    public void writeToFile(DataType type, List<String> data) throws IOException {
+        String fileName = outPath + File.separator + prefix + type.getType() + ".txt";
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, appendMode))) {
             for (String line : data) {
                 writer.write(line);
@@ -28,7 +30,7 @@ public class OutputFile {
         }
     }
 
-    public String getFileName(String type) {
-        return outPath + File.separator + prefix + type + ".txt";
+    public String getFileName(DataType type) {
+        return outPath + File.separator + prefix + type.getType() + ".txt";
     }
 }

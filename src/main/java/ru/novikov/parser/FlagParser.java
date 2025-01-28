@@ -9,7 +9,8 @@ public class FlagParser {
     private String outPath = ".";
     private String prefix = "";
     private boolean appendMode = false;
-    private boolean showStatistics = false;
+    private boolean showShortStatistics = false;
+    private boolean showFullStatistics = false;
 
     public FlagParser(String[] args) {
         parseFlag(args);
@@ -36,7 +37,10 @@ public class FlagParser {
                     appendMode = true;
                     break;
                 case "-s":
-                    showStatistics = true;
+                    showShortStatistics = true;
+                    break;
+                case "-f":
+                    showFullStatistics = true;
                     break;
                 default:
                     inputFiles.add(args[i]);
@@ -61,7 +65,11 @@ public class FlagParser {
         return appendMode;
     }
 
-    public boolean isShowStatistics() {
-        return showStatistics;
+    public boolean isShowShortStatistics() {
+        return showShortStatistics;
+    }
+
+    public boolean isShowFullStatistics() {
+        return showFullStatistics;
     }
 }

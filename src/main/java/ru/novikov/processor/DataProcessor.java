@@ -12,7 +12,7 @@ public class DataProcessor {
     public void lineProcessor(String line) {
         if (isLong(line)) {
             integers.add(line);
-        } else if (isFloat(line)) {
+        } else if (isDouble(line)) {
             floats.add(line);
         } else {
             strings.add(line);
@@ -40,9 +40,9 @@ public class DataProcessor {
         }
     }
 
-    private boolean isFloat(String str) {
+    private boolean isDouble(String str) {
         try {
-            Float.parseFloat(str);
+            Double.parseDouble(str);
             return str.contains(".") || str.contains(",");
         } catch (NumberFormatException e) {
             return false;
