@@ -1,5 +1,7 @@
 package ru.novikov.processor;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,9 +12,9 @@ public class DataProcessor {
     private final List<String> strings = new ArrayList<>();
 
     public void lineProcessor(String line) {
-        if (isLong(line)) {
+        if (isInteger(line)) {
             integers.add(line);
-        } else if (isDouble(line)) {
+        } else if (isFloat(line)) {
             floats.add(line);
         } else {
             strings.add(line);
@@ -31,19 +33,19 @@ public class DataProcessor {
         return strings;
     }
 
-    private boolean isLong(String str) {
+    private boolean isInteger(String str) {
         try {
-            Long.parseLong(str);
+            new BigInteger(str);
             return true;
         } catch (NumberFormatException e) {
             return false;
         }
     }
 
-    private boolean isDouble(String str) {
+    private boolean isFloat(String str) {
         try {
-            Double.parseDouble(str);
-            return str.contains(".") || str.contains(",");
+            new BigDecimal(str.replace(",", "."));
+            return true;
         } catch (NumberFormatException e) {
             return false;
         }
