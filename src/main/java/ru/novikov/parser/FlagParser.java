@@ -1,36 +1,47 @@
 package ru.novikov.parser;
 
-import java.util.ArrayList;
-import java.util.List;
+import ru.novikov.error.ErrorHandler;
+
+import java.util.*;
 
 public class FlagParser {
 
     private final List<String> inputFiles = new ArrayList<>();
+    private final ErrorHandler errorHandler;
     private String outPath = ".";
     private String prefix = "";
     private boolean appendMode = false;
     private boolean showShortStatistics = false;
     private boolean showFullStatistics = false;
 
-    public FlagParser(String[] args) {
+    public FlagParser(String[] args, ErrorHandler errorHandler1) {
+        this.errorHandler = errorHandler1;
         parseFlag(args);
     }
 
     private void parseFlag(String[] args) {
+        Map<String, String> usedFlags = new HashMap<>();
+        Set<String> validFlags = Set.of("-o", "-p", "-a", "-s", "-f");
+
         for (int i = 0; i < args.length; i++) {
-            switch (args[i]) {
+            String flag = args[i];
+            switch (flag) {
                 case "-o":
-                    if (i + 1 < args.length) {
-                        outPath = args[++i];
-                    } else {
-                        throw new IllegalArgumentException("Ошибка: Не указан путь после -o");
-                    }
-                    break;
                 case "-p":
-                    if (i + 1 < args.length) {
-                        prefix = args[++i];
+                    if (i + 1 < args.length && !validFlags.contains(args[i + 1])) {
+                        String value = args[++i];
+                        if (value.endsWith(".txt")) {
+                            errorHandler.handleError("Не указан аргумент после " + flag + ", используется значение по умолчанию.");
+                            inputFiles.add(value);
+                        } else {
+                            if (usedFlags.containsKey(flag)) {
+                                errorHandler.handleError("Флаг " + flag + " указан несколько раз. Повтор не учитывается.");
+                            } else {
+                                usedFlags.put(flag, value);
+                            }
+                        }
                     } else {
-                        throw new IllegalArgumentException("Ошибка: Не указан префикс после -p");
+                        errorHandler.handleError("Не указан аргумент после " + flag + ", используется значение по умолчанию.");
                     }
                     break;
                 case "-a":
@@ -43,10 +54,12 @@ public class FlagParser {
                     showFullStatistics = true;
                     break;
                 default:
-                    inputFiles.add(args[i]);
+                    inputFiles.add(flag);
                     break;
             }
         }
+        prefix = usedFlags.getOrDefault("-p", prefix);
+        outPath = usedFlags.getOrDefault("-o", outPath);
     }
 
     public List<String> getInputFiles() {
